@@ -13,9 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetDestinations:
   - {x: 20, y: 2, z: 10}
-  - {x: 0, y: 0, z: 0}
+  - {x: 10, y: 0, z: -20}
   - {x: 10, y: 3, z: 10}
   mainObjectSpeed: 10
   numberOfObstacles: 100
-  obstacleMaxPlanePositionValue: 50
+  obstacleMaxPlanePositionValue: 35
   obstacleMaxHeightPositionValue: 5

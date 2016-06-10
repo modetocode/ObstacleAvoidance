@@ -11,6 +11,8 @@ public class GameComponent : MonoBehaviour {
     private MainObjectComponent mainObject;
     [SerializeField]
     private GameObject obstacleTemplate;
+    [SerializeField]
+    private CameraComponent cameraComponent;
 
     private GameConstants GameConstants { get { return GameSettingsManager.GetGameConstants(); } }
     private IList<GameObject> obstacleList;
@@ -28,13 +30,9 @@ public class GameComponent : MonoBehaviour {
             throw new InvalidOperationException("There should be at least one destination.");
         }
 
-        this.mainObject.CollidedWithAnotherObject += FinishGame;
+        this.mainObject.CollidedWithAnotherObject += OnCollisionHit;
+        this.cameraComponent.TrackObject(this.mainObject.gameObject);
         this.MoveMainObject();
-    }
-
-    public void Destroy() {
-        this.mainObject.DestinationReached -= OnDestinationReached;
-        this.mainObject.CollidedWithAnotherObject -= FinishGame;
     }
 
     private void MoveMainObject() {
@@ -47,7 +45,7 @@ public class GameComponent : MonoBehaviour {
         this.mainObject.DestinationReached -= OnDestinationReached;
         this.numberOfCompletedDestinations++;
         if (this.numberOfCompletedDestinations == this.numberOfDestinations) {
-            this.FinishGame();
+            this.FinishGame(true);
         }
         else {
             this.MoveMainObject();
@@ -68,9 +66,21 @@ public class GameComponent : MonoBehaviour {
             z: UnityEngine.Random.Range(-GameConstants.ObstacleMaxPlanePositionValue, GameConstants.ObstacleMaxPlanePositionValue));
     }
 
-    private void FinishGame() {
-        //TODO implement this
-        Debug.Log("Finish game");
+    private void OnCollisionHit() {
+        this.mainObject.CollidedWithAnotherObject -= OnCollisionHit;
+        this.mainObject.DestinationReached -= OnDestinationReached;
+        this.FinishGame(false);
     }
 
+    private void FinishGame(bool isVictory) {
+        if (isVictory) {
+            AudioManagerComponent.Instance.PlayWinSound();
+        }
+        else {
+            AudioManagerComponent.Instance.PlayLoseSound();
+        }
+
+        this.cameraComponent.UntrackObject();
+        Destroy(this.mainObject.gameObject);
+    }
 }
