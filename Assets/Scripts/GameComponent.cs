@@ -13,6 +13,10 @@ public class GameComponent : MonoBehaviour {
     private GameObject obstacleTemplate;
     [SerializeField]
     private CameraComponent cameraComponent;
+    [SerializeField]
+    private GameObject victoryParticleEffectTemplate;
+    [SerializeField]
+    private GameObject loseParticleEffectTemplate;
 
     private GameConstants GameConstants { get { return GameSettingsManager.GetGameConstants(); } }
     private IList<GameObject> obstacleList;
@@ -80,7 +84,10 @@ public class GameComponent : MonoBehaviour {
             AudioManagerComponent.Instance.PlayLoseSound();
         }
 
-        this.cameraComponent.UntrackObject();
+        Vector3 particlePosition = this.mainObject.transform.position;
+        GameObject particlePrefabTemplate = isVictory ? this.victoryParticleEffectTemplate : this.loseParticleEffectTemplate;
+        Instantiate(particlePrefabTemplate, particlePosition, Quaternion.identity);
+        this.cameraComponent.UntrackObject(); ;
         Destroy(this.mainObject.gameObject);
     }
 }

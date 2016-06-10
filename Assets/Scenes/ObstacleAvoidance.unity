@@ -257,6 +257,10 @@ MonoBehaviour:
   mainObject: {fileID: 990513186}
   obstacleTemplate: {fileID: 151142, guid: dd0f3849b63aefc4c8b8b5ab6be26a42, type: 2}
   cameraComponent: {fileID: 148968635}
+  victoryParticleEffectTemplate: {fileID: 100000, guid: 3c1f0555cc3fd4e1d87382fbaa007f8f,
+    type: 2}
+  loseParticleEffectTemplate: {fileID: 100000, guid: bf3f387d006f0414b80b25ba2b9cdf38,
+    type: 2}
 --- !u!4 &880431365
 Transform:
   m_ObjectHideFlags: 0
